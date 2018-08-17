@@ -1,0 +1,261 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  zoom: 1;
+  position: relative;
+}
+
+html {
+  font-size: 16px;
+  overflow: hidden !important;
+}
+
+pre {
+  margin: 0px;
+}
+
+.scroll {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  flex: 1;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.no-data {
+  text-align: center;
+  font-size: 16px;
+  /* color: #fff; */
+}
+
+/** 滚动条样式 */
+
+.scrollbar-track {
+  background: none !important;
+}
+
+.scrollbar-thumb {
+  background: #0BC3BF !important;
+}
+
+@media screen and (min-width: 375px) {
+  html {
+    /* iPhone6的375px尺寸作为16px基准，414px正好18px大小, 600 20px */
+    font-size: calc(100% + 2 * (100vw - 375px) / 39);
+    font-size: calc(20px + 2 * (100vw - 375px) / 39);
+  }
+}
+
+@media screen and (min-width: 414px) {
+  html {
+    /* 414px-1000px每100像素宽字体增加1px(18px-22px) */
+    font-size: calc(112.5% + 4 * (100vw - 414px) / 586);
+    font-size: calc(18px + 4 * (100vw - 414px) / 586);
+  }
+}
+
+@media screen and (min-width: 600px) {
+  html {
+    /* 600px-1000px每100像素宽字体增加1px(20px-24px) */
+    font-size: calc(125% + 4 * (100vw - 600px) / 400);
+    font-size: calc(20px + 4 * (100vw - 600px) / 400);
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  html {
+    /* 1000px往后是每100像素0.5px增加 */
+    font-size: calc(137.5% + 6 * (100vw - 1000px) / 1000);
+    font-size: calc(16px + 6 * (100vw - 1000px) / 1000);
+  }
+}
+
+.col .row {
+  margin: unset;
+}
+
+.content-main {
+  height: 100%;
+  background-color: #061b38;
+}
+
+#site-layout-example-top {
+  position: fixed;
+  z-index: 10;
+  padding: 0px;
+}
+
+#site-layout-example-left {
+  background-color: #061b38;
+  height: 100%;
+  padding: 0 0.5rem;
+  /* padding-top: 20px; */
+}
+
+#site-layout-example-middle {
+  background-color: #061b38;
+  height: 100%;
+}
+
+#site-layout-example-right {
+  background-color: #061b38;
+  height: 100%;
+  padding: 0 0.5rem;
+}
+
+/* 左上屏 右上屏*/
+
+.page-1,
+.page-5 {
+  height: 40%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-height: 800px) {
+  .one-item {
+    padding-bottom: 0.3rem !important;
+  }
+}
+
+.one-item {
+  font-size: 0.6rem;
+  color: #9EC9FE;
+  width: 100%;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  padding: 0.6rem;
+  padding-top: 0;
+  vertical-align: middle;
+}
+
+.one-item .item {
+  display: -webkit-flex;
+  align-items: center;
+  /* margin-right: 20px; */
+  margin-right: 10px;
+}
+
+.one-item img {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.big-number {
+  font-size: 0.9rem;
+  margin: 0 5px;
+}
+
+.chip-true {
+  height: 22px;
+  line-height: 22px;
+  font-size: 14px;
+  padding: 2px 5px;
+  border-radius: 12px;
+  background-color: #0089ff;
+  color: #ffffff;
+}
+
+.chip-false {
+  height: 22px;
+  line-height: 22px;
+  font-size: 14px;
+  padding: 2px 5px;
+  border-radius: 12px;
+  background-color: #e91919;
+  color: #ffffff;
+}
+
+.slider {
+  height: 200px !important;
+}
+
+.slider .indicators {
+  z-index: 5;
+}
+
+/* 左中屏  右中屏*/
+
+.page-2,
+.page-6 {
+  margin-top: 0.5rem;
+  height: calc(28% - 0.5rem);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 左下屏  右下屏*/
+
+.page-3,
+.page-7 {
+  margin-top: 0.5rem;
+  height: calc(30% - 0.5rem);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cool_split {
+  flex-shrink: 0;
+  height: 5rem;
+}
+
+.color-line {
+  width: 100%;
+  height: 0.5rem;
+  background: linear-gradient(to right, #3fff00, #ff0000);
+  border-radius: 5px;
+}
+
+.page-title {
+  position: relative;
+  font-size: 0.6rem !important;
+  font-weight: normal;
+  font-stretch: normal;
+  letter-spacing: 0px;
+  /* color: #fff; */
+  color: #fff;
+  display: -webkit-flex;
+  align-items: center;
+}
+
+.page-title .icon-title {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  zoom: 1;
+  font-size: 0px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.page-title .page-title {
+  padding-left: 0.2rem;
+  font-family: '微软雅黑';
+}
+
+.icon-del {
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+
+.page-title pre {
+  vertical-align: top;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  vertical-align: middle;
+}
+
+.material-placeholder {
+  display: inline-block;
+  cursor: pointer;
+}

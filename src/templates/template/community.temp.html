@@ -1,0 +1,40 @@
+<div class="comm-dialog">
+  <div class="dialog-top">
+    <div class="top-title">张家川县基本情况</div>
+    <img class="dialog-close" src="../../../src/static/images/content/icon_delete.png">
+  </div>
+  <div class="dialog-mid">
+    <div class="carousel">
+      {{#each imgList}}
+      <a class="carousel-item" href="{{id}}">
+        <img src="{{img}}">
+      </a>
+      {{/each}}
+    </div>
+    <div class="comm-info">
+      <div class="card-vertex">
+        <div class="vertex lt"></div>
+        <div class="vertex rt"></div>
+        <div class="vertex rb"></div>
+        <div class="vertex lb"></div>
+        <div class="comm-info-content">
+          {{#if content1}}
+          <div>
+            {{content1}}
+          </div>
+          {{/if}}          
+          {{#if content2}}
+          <div>
+            {{content2}}
+          </div>
+           {{/if}}
+           {{#if content3}}
+          <div>
+            {{content3}}
+          </div>
+           {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

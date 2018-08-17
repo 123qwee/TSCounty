@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="gbk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>智慧社区管理服务平台</title>
+  <link rel="alternate icon" type="image/png" href="./src/static/images/content/favicon-defalut.png">
+  <!-- css样式 -->
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="./src/css/normalize.css">
+  <!-- Compiled and minified CSS -->
+  <link type="text/css" rel="stylesheet" href="./src/static/config/css/materialize.min.css" media="screen,projection">
+  <link type="text/css" rel="stylesheet" href="./src/static/config/css/mapbox-gl.css">
+  <link type='text/css' rel='stylesheet' href='./src/static/config/css/mapbox-gl-draw.css'>
+  <!-- ol -->
+  <link rel="stylesheet" type="text/css" href="./src/static/config/css/ol.css">
+  <link rel="stylesheet" type="text/css" href="./src/map/styles/custom_map.css">
+  <!-- 动画库 -->
+  <link type='text/css' rel='stylesheet' href='./src/static/config/css/animate.min.css'>
+  <link type="text/css" rel="stylesheet" href="./src/css/main.css">
+  <link type="text/css" rel="stylesheet" href="./src/css/map.css">
+  <link type="text/css" rel="stylesheet" href="./src/css/layout.css">
+  <!-- 弹出框样式 -->
+  <link type="text/css" rel="stylesheet" href="./src/static/jDialog/jDialog.css">
+  <!-- 日期选择插件 -->
+  <link type="text/css" rel="stylesheet" href="./src/static/config/css/daterangepicker.css">
+
+  <link type="text/css" rel="stylesheet" href="./src/css/ie.css">
+
+  <link rel="stylesheet" href="./src/css/video.css">
+
+</head>
+
+<body>
+  <div class="content-main row">
+    <div id="particles-js" style="position: absolute;width: 100%;height: 100%;"></div>
+    <div id="site-layout-example-top" class="col s12">
+    </div>
+    <!-- 一个page代表一块物理屏幕 -->
+    <div id="site-layout-example-left" class="col s3">
+      <div class="page-1">
+        <div class="cool_split"></div>
+        <div class="page_height_top page-1-1"></div>
+      </div>
+      <div class="page-2">
+      </div>
+      <div class="page-3">
+      </div>
+    </div>
+    <div id="site-layout-example-middle" class="col s6 no-padding">
+      <div class="page-4" style="height: 100%;width:100%;">
+        <div class="cool_split"></div>
+        <div class="page_height_top page-4-1" style="height: calc(100% - 6.1rem);"></div>
+      </div>
+    </div>
+    <div id="site-layout-example-right" class="col s3">
+      <div class="page-5">
+        <div class="cool_split"></div>
+        <div class="page_height_top page-5-1"></div>
+      </div>
+      <div class="page-6">
+      </div>
+      <div class="page-7">
+      </div>
+    </div>
+  </div>
+  <div class="dialog-page">
+    <div id="statis-modal" class="statis-modal modal modal-content">
+    </div>
+  </div>
+  <div class="dialog-page">
+    <div id="info-modal" class="info-modal modal modal-content">
+    </div>
+  </div>
+  <script src="./src/static/particles.min.js"></script>
+  <script src="./src/static/particlesapp.js"></script>
+  <!-- 插入js插件 -->
+  <script src="./src/static/config/js/jquery.min.js"></script>
+  <!-- jquery -->
+  <script src="./src/static/config/js/handlebars.min.js"></script>
+  <!-- handlebars -->
+  <script src="./src/static/config/js/lodash.min.js"></script>
+  <!-- lodash -->
+  <!-- ol -->
+  <script type="text/javascript" src="./src/static/config/js/ol.js"></script>
+  <script src="./src/static/config/js/echarts.js"></script>
+  <!-- 滚动条 -->
+  <script src="./src/static/config/js/smooth-scrollbar.js"></script>
+  <script src="./src/static/config/js/overscroll.js"></script>
+  <script src="./src/static/config/js/materialize.min.js"></script>
+  <script src="./src/static/config/js/axios.min.js"></script>
+
+  <!-- 弹出对话框 -->
+  <script src="./src/static/jDialog.js"></script>
+  <!-- 日期选择对话框 -->
+  <script src="./src/static/config/js/moment.min.js"></script>
+  <script src="./src/static/config/js/timeago.min.js"></script>
+  <!-- 轮播 -->
+  <script src="./src/static/config/js/scroll.js"></script>
+  <!-- 本地缓存lscache -->
+  <script src="./src/static/config/js/lscache.min.js"></script>
+
+  <script src="./src/static/config/js/es5-sham.js"></script>
+  <script src="./src/static/config/js/es5-shim.js"></script>
+  <script src="./src/static/config/js/polyfill.min.js"></script>
+  <script src="./src/static/constants.js"></script>
+
+  <script src="./src/static/config/js/system.js"></script>
+  <script src="./out-static.js"></script>
+  <script src="./src/static/md5.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      if (lscache.get('userName') == undefined || lscache.get('userName') ==
+        null) {
+        window.location.href = 'login.html'
+      }
+    });
+
+  </script>
+</body>
+
+</html>

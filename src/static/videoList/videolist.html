@@ -1,0 +1,361 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>智慧社区管理服务平台</title>
+    <link rel="stylesheet" href="../newWindow/jquery.pagination.css">
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+        }
+
+        .content {
+            width: 1000px;
+            margin: 20px auto 0 auto;
+            overflow: hidden;
+            height: calc(100% - 20px);
+        }
+
+        .content .left {
+            width: 60%;
+            float: left;
+            overflow: hidden;
+        }
+
+        .content .right {
+            width: 36%;
+            float: right;
+            padding-top: 20px;
+            position: relative;
+        }
+
+        .content .right .list-box {
+            padding: 4px 0;
+            cursor: pointer;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .upImg_List {
+            display: flex;
+            flex-wrap: wrap;
+            vertical-align: top;
+            padding: 12px 0;
+            justify-content: space-between;
+        }
+
+        .upImg_List img {
+            max-width: 295px;
+            max-height: 295px;
+        }
+
+        .img_box {
+            width: 293px;
+            height: 250px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: top;
+            position: relative;
+            margin-right: 0.2rem;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            cursor: -webkit-zoom-in;
+        }
+
+        .box {
+            position: absolute;
+            right: 0;
+            height: 34px;
+        }
+
+        input[type='text'],
+        .ui-pagination-page-btn {
+            display: none;
+        }
+
+        .six-item {
+            font-size: 0.8rem;
+            cursor: pointer;
+            /* color: #A0C9FF; */
+            border-radius: 5px;
+            padding: 5px;
+            display: flex;
+            transition: background .5s;
+        }
+
+        .six-item .item-title {
+            width: 20%;
+        }
+
+        .six-item .item-title img {
+            /* width: 100%; height: 100%; */
+            height: 60px;
+            width: 100%;
+        }
+
+        .six-item .item-content {
+            width: 80%;
+            padding-left: 20px;
+        }
+
+        .six-item .item-content-title {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+        }
+
+        .six-item .item-content-date {
+            padding: 5px 0;
+        }
+
+        .left-img {
+            display: block;
+        }
+
+        .left-video {
+            display: none;
+        }
+
+        .btn {
+            color: #fff;
+            background-color: #409eff;
+            border-color: #409eff;
+            display: inline-block;
+            line-height: 1;
+            white-space: nowrap;
+            cursor: pointer;
+            border: 1px solid #dcdfe6;
+            border-color: #dcdfe6;
+            -webkit-appearance: none;
+            text-align: center;
+            box-sizing: border-box;
+            outline: none;
+            margin: 0;
+            transition: .1s;
+            font-weight: 500;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        .list-content-box {
+            padding: 4px 0;
+        }
+
+        span.right-content-name {
+            font-weight: bold;
+            color: #6d6a6a;
+            padding-right: 7px;
+        }
+
+        span.right-content-time {
+            color: #888;
+        }
+
+        .video-select {
+            height: 35px;
+        }
+
+        #VideoSelect {
+            height: 1.7rem;
+            font-size: 16px;
+            display: inline-block;
+            width: 120px;
+            box-shadow: 1px 1px 2px #18a15f;
+            border: 1px solid #18a15f;
+            color: #18a15f;
+        }
+
+        .box {
+            position: absolute;
+            right: 0;
+            height: 34px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- jquery -->
+    <script src="../config/js/jquery.min.js"></script>
+    <!-- lodash -->
+    <script src="../config/js/lodash.min.js"></script>
+    <!-- 本地缓存lscache -->
+    <script src="../config/js/lscache.min.js"></script>
+    <script src="./jquery.pagination.min.js"></script>
+    <script src="./loading.js"></script>
+    <div class="content">
+        <div class="left">
+            <div class="real-time" style="width:100%;height: 600px;">
+                <!--引用外部的html页面 
+                        width外部页面的宽度,
+                        height外部页面的高度,
+                        scrolling是否有滚动条,
+                        noresize 属性规定用户无法调整框架的大小,
+                        frameborder是否有边框-->
+                <!-- ../../static/video/demo-easy.html -->
+                <iframe id="real-time" src="#" width="100%" height="100%" name="topFrame" scrolling="No" noresize="noresize" frameborder="0"
+                    id="topFrame"></iframe>
+            </div>
+        </div>
+        <div class="right">
+            <div class="video-select">
+                <select id="VideoSelect" class="select">
+                </select>
+            </div>
+            <div class="list"></div>
+            <div class="box">
+                <div id="pagination1" class="page fl"></div>
+                <div class="info fl"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function (params) {
+            var dataList = []; // 储存列表数据
+            var HOST_URL = "http://61.178.131.29:8026";
+            var initList = true;
+
+            if (lscache.get('userName') == undefined || lscache.get('userName') ==
+                null) {
+                window.location.href = './../../../login.html';
+            }
+            videoList({ page: 1 });
+            selectOption();
+            // 封装ajax请求
+            function ajax(params) {
+                $.ajax({
+                    type: params.type,
+                    url: HOST_URL + params.url,
+                    data: params.data,
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function (data) {
+                        params.successFunc && params.successFunc(data);
+                    },
+                });
+            };
+            function loading() {
+                $('body').loading({
+                    loadingWidth: 240,
+                    title: '请稍等!',
+                    name: 'list',
+                    direction: 'column',
+                    type: 'origin', // originBg:'#71EA71',
+                    originDivWidth: 40,
+                    originDivHeight: 40,
+                    originWidth: 6,
+                    originHeight: 6,
+                    smallLoading: false,
+                    loadingMaskBg: 'rgba(0,0,0,0.2)'
+                });
+            }
+            // 重新渲染列表
+            function resetList(params) {
+                dataList = params;
+                let html = ""
+                _.map(params, function (item, index) {
+                    html += '<div class="list-box" data-id=' + item.id + '><span class="right-content-name">[' + item.communityName + ']</span><span class="right-content-matter">' + item.videoInfo + '</span></div>';
+                });
+                $(".right .list").html(html);
+                // 默认显示第一个
+                let video = params[0];
+                document.getElementById("real-time").src = "./../video/video.html?user=" + video.communityUser + "&pwd=" + video.communityPwd + "&ip=" + video.communityIp + "&port=" + video.communityPort;
+
+                // 绑定列表点击事件
+                $(".list-box").on("click", function (e) {
+                    let videoConfig = _.find(dataList, { id: parseInt($(this).attr("data-id")) });
+                    console.log(videoConfig);
+                    document.getElementById("real-time").src = "./../video/video.html?user=" + videoConfig.communityUser + "&pwd=" + videoConfig.communityPwd + "&ip=" + videoConfig.communityIp + "&port=" + videoConfig.communityPort;
+                });
+                // 过滤数据
+                $("#VideoSelect").on("change", function (params) {
+                    filter($(this).val())
+                });
+
+            };
+            // 绑定下拉框
+            function selectOption() {
+                ajax({
+                    type: "GET",
+                    url: "/community/basic/county/video/findCommunityByCode",
+                    data: {
+                        code: lscache.get("config").config.code,
+                    },
+                    successFunc: function (data) {
+                        if (data.code == 200) {
+                            let opt = "<option value='0'>--请选择--</option>";
+                            let communityList = [];
+                            if (lscache.get("config").config.communityUrl) {
+                                communityList = lscache.get("config").config.communityUrl.split(",")
+                            }
+
+                            _.map(communityList, function (value, key) {
+                                opt += "<option value=" + key + ">" + value + "</option>";
+                            });
+                            $("#VideoSelect").html(opt);
+                        }
+                    }
+                });
+            }
+            // 列表
+            function videoList(params) {
+                loading();
+                ajax({
+                    type: "GET",
+                    url: "/community/basic/county/video/findByCode",
+                    data: {
+                        page: params.page,
+                        pageSize: 10,
+                        orderBy: "communityName",
+                        order: "desc",
+                        code: lscache.get("config").config.code,
+                    },
+                    successFunc: function (data) {
+                        if (data.code == 200) {
+                            // 渲染列表
+                            resetList(data.data.list);
+                        }
+
+
+                        if (initList) {
+                            $("#pagination1").pagination({
+                                currentPage: data.data.currentPage,
+                                totalPage: data.data.totalPage,
+                                count: 1,
+                                callback: function (current) {
+                                    videoList({ page: current });
+                                }
+                            });
+                            initList = false;
+                        }
+                    }
+                })
+            };
+            // 筛选
+            function filter(val) {
+                loading();
+                let data = {
+                    code: val,
+                    page: 1
+                };
+                videoList(data);
+            }
+        });
+    </script>
+</body>
+
+</html>

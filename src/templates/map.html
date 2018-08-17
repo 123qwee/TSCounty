@@ -1,0 +1,95 @@
+<div id="map-container" class="map-container">
+  <span class="row row1"></span>
+  <span class="row row2"></span>
+  <span class="row col2"></span>
+  <span class="row col1"></span>
+  <div id="map"></div>
+  <div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content" style="width:220px; height:56px;"></div>
+  </div>
+  <!-- <div id="g-popup" class="g-ol-popup">
+    <a href="#" id="g-popup-closer" class="g-ol-popup-closer"></a>
+    <div id="g-popup-content" style="width:220px; height:56px;"></div>
+  </div> -->
+
+  <div id="controls">
+    <div class="map-video">
+      <select id="MapVideo" class="select">
+      </select>
+    </div>
+    <div class="more">更多...</div>
+    <div class="real-time-video">
+      <div class="real-time">
+        <!--引用外部的html页面 
+          width外部页面的宽度,
+          height外部页面的高度,
+          scrolling是否有滚动条,
+          noresize 属性规定用户无法调整框架的大小,
+          frameborder是否有边框-->
+        <!-- ../../static/video/demo-easy.html -->
+        <iframe id="real-time-video1" src="#" width="100%" height="100%" name="topFrame" scrolling="No" noresize="noresize" frameborder="0"
+          id="topFrame"></iframe>
+      </div>
+      <div class="real-time">
+        <!--引用外部的html页面 
+                width外部页面的宽度,
+                height外部页面的高度,
+                scrolling是否有滚动条,
+                noresize 属性规定用户无法调整框架的大小,
+                frameborder是否有边框-->
+        <!-- ../../static/video/demo-easy.html -->
+        <iframe id="real-time-video2" src="#" width="100%" height="100%" name="topFrame" scrolling="No" noresize="noresize" frameborder="0"
+          id="topFrame"></iframe>
+      </div>
+      <div class="real-time">
+        <!--引用外部的html页面 
+                width外部页面的宽度,
+                height外部页面的高度,
+                scrolling是否有滚动条,
+                noresize 属性规定用户无法调整框架的大小,
+                frameborder是否有边框-->
+        <!-- ../../static/video/demo-easy.html -->
+        <iframe id="real-time-video3" src="#" width="100%" height="100%" name="topFrame" scrolling="No" noresize="noresize" frameborder="0"
+          id="topFrame"></iframe>
+      </div>
+
+    </div>
+    <div class="controls-border">
+      <!-- 罗盘 -->
+      <div class="controls-box">
+        <div class="controls-compass">
+          <div class="controls-top-bar"></div>
+          <div class="controls-left-bar"></div>
+          <div class="controls-bottom-bar"></div>
+          <div class="controls-right-bar"></div>
+          <div class="controls-compass-arrow">
+            <img src="./src/static/images/map/icon_compass_pointer.png">
+          </div>
+        </div>
+      </div>
+      <!-- 工具按钮 -->
+      <div class="controls-tools">
+        <div id='distance' class='distance-container'></div>
+        <div class="controls-rotate-reduce box waves-effect waves-light">
+          <div></div>
+        </div>
+        <div class="controls-rotate-add box waves-effect waves-light">
+          <div></div>
+        </div>
+        <div class="controls-rotate-left box waves-effect waves-light">
+          <div></div>
+        </div>
+        <div class="controls-rotate-right box waves-effect waves-light">
+          <div></div>
+        </div>
+        <div class="tool-btn box waves-effect waves-light">
+          <div></div>
+        </div>
+        <div class="tool-reset box waves-effect waves-light">
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

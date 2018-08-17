@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="gbk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>智慧社区管理服务平台登录</title>
+  <link rel="alternate icon" type="image/png" href="./src/static/images/content/favicon-defalut.png">
+  <!-- css样式 -->
+  <!-- Compiled and minified CSS -->
+  <link type="text/css" rel="stylesheet" href="./src/static/config/css/materialize.min.css" media="screen,projection">
+  <link type="text/css" rel="stylesheet" href="./src/css/login.css">
+  <link type="text/css" rel="stylesheet" href="./src/css/ie.css">
+  <!-- jquery -->
+  <script src="./src/static/config/js/jquery.min.js"></script>
+  <!-- 本地缓存lscache -->
+  <script src="./src/static/config/js/lscache.min.js"></script>
+  <script type="text/javascript">
+
+    var HOST = "http://61.178.131.29:8024";
+
+    function check() {
+      var user = document.getElementsByName('logname')[0];
+      var pwd = document.getElementsByName('logpass')[0];
+
+      var logNameTips = document.getElementsByClassName('logname-tips')[0];
+      var logPassTips = document.getElementsByClassName('logpass-tips')[0];
+
+      if (user.value == "") {
+        logNameTips.innerHTML = "请输入用户名";
+        return false;
+      } else {
+        logNameTips.innerHTML = "";
+      }
+
+      if (pwd.value == "") {
+        logPassTips.innerHTML = "请输入密码";
+        return false;
+      } else {
+        logPassTips.innerHTML = "";
+      }
+
+      $.ajax({
+        type: 'post',
+        url: HOST + "/communtiy/basic/login?account=" + user.value +
+          "&password=" + pwd.value,
+        success: function (data) {
+          if (data.code == 200) {
+            lscache.set("userName", data.data, 30);
+            // 获取配置参数
+            getConfig(data.data.communtiyCode);
+          } else {
+            document.getElementsByClassName('logpass-tips')[0].innerHTML =
+              "密码错误, 请重试";
+          }
+        }
+      });
+    }
+    // 获取配置参数
+    function getConfig(code) {
+      $.ajax({
+        type: 'get',
+        url: HOST + "/community/basic/config/findByCode?code=" + code,
+        success: function (data) {
+          if (data.code == 200) {
+            lscache.set("config", data.data, 30);
+            window.location.href = '/index.html';
+          }else{
+            document.getElementsByClassName('logpass-tips')[0].innerHTML =
+              "请求失败, 请重试";
+          }
+        }
+      });
+    }
+
+    function lockPwd() {
+      if (lscache.get('lockPwd') != true) {
+        $('.lock-pwd-check').css("display", "block");
+        lscache.set('lockPwd', true);
+      } else {
+        $('.lock-pwd-check').css("display", "none");
+        lscache.set('lockPwd', false);
+      }
+    }
+
+    function isValidate(dom) {
+      if (dom.value == "") {
+        document.getElementsByClassName(dom.name + '-tips')[0].innerHTML = dom.placeholder;
+      } else {
+        document.getElementsByClassName(dom.name + '-tips')[0].innerHTML = "";
+      }
+    }
+
+    $(document).ready(function () {
+      $('.login-panel').bind('keyup', function (event) {
+        if (event.keyCode == "13") {
+          check();
+        }
+      });
+    });
+
+  </script>
+
+</head>
+
+<body>
+  <div class="login-page">
+    <div class="login-panel">
+      <img src="./src/static/images/login/login.png">
+      <div class="login-item login-user">
+        <div class="lable-title">用户账号</div>
+        <div class="card-vertex">
+          <div class="vertex lt"></div>
+          <div class="vertex rt"></div>
+          <div class="vertex rb"></div>
+          <div class="vertex lb"></div>
+          <input name="logname" id="user-name" type="text" placeholder="请输入用户名..." onblur="isValidate(this)">
+        </div>
+      </div>
+      <div class="logname-tips"></div>
+      <div class="login-item login-pwd">
+        <div class="lable-title">用户密码</div>
+        <div class="card-vertex">
+          <div class="vertex lt"></div>
+          <div class="vertex rt"></div>
+          <div class="vertex rb"></div>
+          <div class="vertex lb"></div>
+          <input name="logpass" id="password" type="password" placeholder="请输入密码..." onblur="isValidate(this)">
+        </div>
+      </div>
+      <div class="logpass-tips"></div>
+      <!-- <div class="lock-pwd">
+        <div class="lock-imgs" onclick="lockPwd()">
+          <img src="./src/static/images/login/check.png">
+          <img class="lock-pwd-check" src="./src/static/images/login/checked.png">
+        </div>
+        <div class="lable-title">记住密码</div>
+      </div> -->
+      <div class="login-btn" onclick="check()">
+        <div class="login-text">登录</div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="gbk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>智慧社区管理服务平台</title>
+  <link rel="stylesheet" href="../newWindow/jquery.pagination.css">
+  <!-- <link rel="stylesheet" href="./animate.css"> -->
+  <!-- <link rel="stylesheet" href="./global.css"> -->
+  <link rel="stylesheet" href="../newWindow/loading.css">
+</head>
+<style>
+  body {
+    height: 100vh;
+    margin: 0;
+  }
+
+  .content {
+    width: 1000px;
+    margin: 20px auto 0 auto;
+    overflow: hidden;
+    height: calc(100% - 20px);
+  }
+
+  .content .left {
+    width: 60%;
+    float: left;
+    overflow: hidden;
+  }
+
+  .content .right {
+    width: 36%;
+    float: right;
+    padding-top: 20px;
+    position: relative;
+  }
+
+  .content .right .list-box {
+    padding: 4px 0;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .upImg_List {
+    display: flex;
+    flex-wrap: wrap;
+    vertical-align: top;
+    padding: 12px 0;
+    justify-content: space-between;
+  }
+
+  .upImg_List img {
+    max-width: 295px;
+    max-height: 295px;
+  }
+
+  .img_box {
+    width: 293px;
+    height: 250px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    position: relative;
+    margin-right: 0.2rem;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: -webkit-zoom-in;
+  }
+
+  .box {
+    position: absolute;
+    right: 0;
+    height: 34px;
+  }
+
+  input[type='text'],
+  .ui-pagination-page-btn {
+    display: none;
+  }
+
+  .six-item {
+    font-size: 0.8rem;
+    cursor: pointer;
+    /* color: #A0C9FF; */
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    transition: background .5s;
+  }
+
+  .six-item .item-title {
+    width: 20%;
+  }
+
+  .six-item .item-title img {
+    /* width: 100%; height: 100%; */
+    height: 60px;
+    width: 100%;
+  }
+
+  .six-item .item-content {
+    width: 80%;
+    padding-left: 20px;
+  }
+
+  .six-item .item-content-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .six-item .item-content-date {
+    padding: 5px 0;
+  }
+
+  .left-img {
+    display: block;
+  }
+
+  .left-video {
+    display: none;
+  }
+
+  .btn {
+    color: #fff;
+    background-color: #409eff;
+    border-color: #409eff;
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1px solid #dcdfe6;
+    border-color: #dcdfe6;
+    -webkit-appearance: none;
+    text-align: center;
+    box-sizing: border-box;
+    outline: none;
+    margin: 0;
+    transition: .1s;
+    font-weight: 500;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+
+  .list-content-box {
+    padding: 4px 0;
+  }
+
+  span.right-content-name {
+    font-weight: bold;
+    color: #6d6a6a;
+    padding-right: 7px;
+  }
+
+  span.right-content-time {
+    color: #888;
+  }
+</style>
+
+<body>
+  <!-- jquery -->
+  <script src="../config/js/jquery.min.js"></script>
+  <!-- lodash -->
+  <script src="../config/js/lodash.min.js"></script>
+  <script src="../newWindow/jquery.pagination.min.js"></script>
+  <script src="../newWindow/loading.js"></script>
+  <script src="./zooming.js"></script>
+  <!-- 本地缓存lscache -->
+  <script src="../../static/config/js/lscache.min.js"></script>
+
+  <script type="text/javascript" src="alertPopShow.js"></script>
+  <link rel="stylesheet" href="common.css">
+
+  <div class="content">
+    <div class="left">
+      <div class="left-content"></div>
+      <div style="padding-top: 35px;display: flex;align-items: center;justify-content: space-between;">
+        <div>
+          <button class="btn" id="handleViewImg">查看图片</button>
+          <button class="btn" id="handleViewVideo">查看视频</button>
+        </div>
+        <!-- <div>
+          <button class="btn" id="handleCase">办理</button>
+        </div> -->
+      </div>
+      <div class="left-img"></div>
+      <div class="left-video"></div>
+
+    </div>
+    <div class="right">
+      <div class="list"></div>
+      <div class="box">
+        <div id="pagination1" class="page fl"></div>
+        <div class="info fl"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function (params) {
+      if (lscache.get('userName') == undefined || lscache.get('userName') ==
+        null) {
+        window.location.href = './../../login.html';
+      }
+
+      var cloudSign = location.href.slice(location.href.indexOf("?code") +
+        6);
+
+      var initList = true; //初始化列表
+      var HOST_URL = "http://61.178.131.29:8024";
+      var SERVER_FILE_URL = HOST_URL + "/fastdfs/file/file/";
+      var infoList = []; // 右侧列表
+      var viewId = ""; // 查看id
+
+      // 封装ajax请求
+      function ajax(params) {
+        $.ajax({
+          type: params.type,
+          url: HOST_URL + params.url,
+          data: params.data,
+          crossDomain: true,
+          xhrFields: {
+            withCredentials: true
+          },
+          success: function (data) {
+            params.successFunc && params.successFunc(data);
+          },
+        });
+      };
+
+      function loading() {
+        $('body').loading({
+          loadingWidth: 240,
+          title: '请稍等!',
+          name: 'list',
+          direction: 'column',
+          type: 'origin', // originBg:'#71EA71',
+          originDivWidth: 40,
+          originDivHeight: 40,
+          originWidth: 6,
+          originHeight: 6,
+          smallLoading: false,
+          loadingMaskBg: 'rgba(0,0,0,0.2)'
+        });
+      }
+      infoListFun(1);
+
+      function infoListFun(page) {
+        loading();
+
+        ajax({
+          type: "GET",
+          url: "/communtiy/buss/matter/publics/front/search/findAllNoDealFront",
+          data: {
+            cloudSign: cloudSign,
+            page: page,
+            pageSize: 10,
+            orderBy: 'addTime',
+            order: 'desc'
+          },
+          successFunc: function (data) {
+            var html = '';
+            _.map(data.data.list,
+              function (item, index) {
+                html += '<div class="list-box" data-id="' + item.id + '"><span class="right-content-name">[' + item.unitName + ']</span><span class="right-content-matter">' + item.matterDesc + '</span>&nbsp;&nbsp;<span class="right-content-time">' + item.addTime + '</span></div>'
+              });
+
+            infoList = data.data.list;
+
+            $(".right .list").html(html);
+            $(".list-box").on("click", function (params) {
+              var id = $(this).attr(
+                "data-id");
+              loading();
+              view(id);
+            });
+            if (initList) {
+              $("#pagination1").pagination({
+                currentPage: data.data.currentPage,
+                totalPage: data.data.totalPage,
+                count: 1,
+                callback: function (current) {
+                  infoListFun(current);
+                }
+              });
+              initList = false;
+            }
+            removeLoading('list');
+            view(data.data.list[0].id);
+          }
+        })
+      };
+
+      function view(id) {
+        var info = _.find(infoList, {
+          id: id
+        });
+        viewId = id;
+        var html = '<div class="list-content-box"><span><span class="right-content-name">事由:</span>' + info.matterDesc + '</span></div><div class="list-content-box"><span><span class="right-content-name">联系电话:</span>' + (info.informantPhone ? info.informantPhone : "") + '</span></div><div class="list-content-box"><span><span class="right-content-name">发生地址:</span>' + info.addressDesc + '</span></div><div class="list-content-box"><span><span class="right-content-name">描述:</span>' + info.expand1 + '</span></div>';
+
+        // 图片
+        var imgDom = "";
+        if (info.medias) {
+          _.map(info.medias.split(','), function (item, index) {
+            imgDom += '<div class="img_box" data-action="zoom" style="cursor: -webkit-zoom-in;background-image:url(' + SERVER_FILE_URL + item + ')"></div>'
+          });
+        }
+        // left - img
+        imgDom = '<div class = "upImg_List" > ' + imgDom + ' </div>';
+
+        // 视频
+        var videoDom = "";
+        if (info.expand2) {
+          _.map(info.expand2.split(','), function (item, index) {
+            videoDom += '<video id="my-video" class="video-js" controls preload="auto" width="100%" height="300" poster="videoBg.png" data-setup="{}"><source id="videoUrl" src="' + SERVER_FILE_URL + item + '" type="video/mp4"></video>'
+          });
+        }
+
+        $(".left-content").html(html);
+        $(".left-img").html(imgDom);
+        $(".left-video").html(videoDom);
+
+        var zooming = new Zooming({
+          scaleBase: 0.5,
+          bgOpacity: 0.5,
+          enableGrab: false
+        });
+        _.map($(".img_box"), function (item, index) {
+          zooming.listen(item);
+        })
+
+        $(".img_box").on("click", function (event) {
+          zooming.listen(this);
+        });
+        removeLoading('list');
+      };
+      // 切换显示 
+      $("#handleViewImg").on("click", function (params) {
+        $(".left-img").css("display",
+          "block");
+        $(".left-video").css("display", "none");
+      });
+      $("#handleViewVideo").on("click",
+        function (params) {
+          $(".left-img").css("display", "none");
+          $(".left-video").css("display",
+            "block");
+        });
+      // function caseUpdate() {
+      //   console.log("已办理");
+      //   ajax({
+      //     type: "GET",
+      //     url: "/communtiy/buss/matter/publics/front/deal/dealMatter",
+      //     data: {
+      //       frontId: viewId,
+      //       userId: lscache.get("userName").id,
+      //       userName: lscache.get("userName").username,
+      //       expand3: $(".confirm_input").val(),
+      //     },
+      //     successFunc: function (data) {
+      //       removeLoading('list');
+      //       infoListFun(1);
+      //     }
+      //   });
+      // }
+
+      // 案卷办理
+      // $('#handleCase').on('click', function () {
+      //   var html = "<label>办理意见：<input class='confirm_input' placeholder='请输入'></label>";
+      //   popTipShow.confirm('案件办理意见', html, ['确 定', '取 消'],
+      //     function (e) {
+      //       //callback 处理按钮事件
+      //       var button = $(e.target).attr('class');
+      //       if (button == 'ok') {
+      //         if (null == $(".confirm_input").val() || "" == $(".confirm_input").val()) {
+      //           webToast("请输入办理意见！", "bottom", 1500);
+      //           return;
+      //         }
+
+      //         this.hide();
+      //         //按下确定按钮执行的操作
+      //         //todo ....								
+      //         caseUpdate();
+      //       }
+
+      //       if (button == 'cancel') {
+      //         //按下取消按钮执行的操作
+      //         //todo ....
+      //         this.hide();
+      //         // setTimeout(function () {
+      //         //   webToast("您选择“取消”了", "top", 2000);
+      //         // }, 300);
+      //       }
+      //     }
+      //   );
+      // });
+
+    });
+
+  </script>
+</body>
+
+</html>

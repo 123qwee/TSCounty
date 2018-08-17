@@ -1,0 +1,28 @@
+<div class="mask"></div>
+<div class="row seven-page">
+  <div class="page-title">
+    <img class="icon-title" src='./src/static/images/content/icon_details.png'>
+    <pre class="page-title">微信上报实时信息：</pre>
+    <!-- <img class="icon-title icon-del seven-close" src='./src/static/images/content/icon_delete.png'> -->
+    <span class="community-event" style="position: absolute;right: 6px;cursor: pointer;">更多...</span>
+  </div>
+  <div class="page-content">
+    <div class="info-scroll">
+      {{#if_list list}}
+      <div class="no-data">暂无数据</div>
+      {{else}}
+      <ul>
+        {{#each list}}
+        <li>
+          <div class="info-item-content" data-lonlat="{{lonlat}}">
+            <span class="info-item-unit">[{{unitName}}]</span>
+            <span class="info-item-title">{{expand1}}</span>
+          </div>
+          <span style="float: right">{{times}}</span>
+        </li>
+        {{/each}}
+      </ul>
+      {{/if_list}}
+    </div>
+  </div>
+</div>

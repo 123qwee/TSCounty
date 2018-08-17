@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+
+<head>
+  <title></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+  <meta http-equiv="Expires" content="0" />
+</head>
+<style>
+  html,
+  body {
+    height: 100vh;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .plugin {
+    width: 100%;
+    height: 100%;
+  }
+
+</style>
+
+<body>
+  <div id="divPlugin" class="plugin"></div>
+</body>
+<script src="../config/js/jquery.min.js"></script>
+<script src="codebase/webVideoCtrl.js"></script>
+<script>
+  $(function () {
+    function downloadFile(url) {
+      try {
+        var elemIF = document.createElement("iframe");
+        elemIF.src = url;
+        elemIF.style.display = "none";
+        document.body.appendChild(elemIF);
+      } catch (e) {}
+    }
+    // 检查插件是否已经安装过
+    var iRet = WebVideoCtrl.I_CheckPluginInstall();
+    if (-1 == iRet) {
+      alert("您还未安装过插件，请安装WebComponentsKit.exe安装！");
+      downloadFile("./codebase/WebComponentsKit.exe");
+      return;
+    }
+
+    var oPlugin = {
+      iWidth: "100%", // plugin width
+      iHeight: "100%" // plugin height
+    };
+    var url = location.search.slice(1).split("&");
+    var config = {};
+    for (let i = 0; i < url.length; i++) {
+      let item = url[i].split("=");
+      config[item[0]] = item[1];
+    };
+    ;
+   
+    var oLiveView = {
+      iProtocol: 1, // protocol 1：http, 2:https
+      szIP: config.ip, // protocol ip
+      szPort: config.port, // protocol port
+      szUsername: config.user, // device username
+      szPassword: config.pwd, // device password
+      iStreamType: 1, // stream 1：main stream  2：sub-stream  3：third stream  4：transcode stream
+      iChannelID: 1, // channel no
+      bZeroChannel: false // zero channel
+    };
+
+    // 初始化插件参数及插入插件
+    WebVideoCtrl.I_InitPlugin(oPlugin.iWidth, oPlugin.iHeight, {
+      bWndFull: true, //是否支持单窗口双击全屏，默认支持 true:支持 false:不支持
+      iWndowType: 1,
+      cbInitPluginComplete: function () {
+        WebVideoCtrl.I_InsertOBJECTPlugin("divPlugin");
+
+        // 检查插件是否最新
+        if (-1 == WebVideoCtrl.I_CheckPluginVersion()) {
+          alert("检测到新的插件版本，请升级WebComponentsKit.exe！");
+          return;
+        }
+
+        // 登录设备
+        WebVideoCtrl.I_Login(oLiveView.szIP, oLiveView.iProtocol,
+          oLiveView.szPort, oLiveView.szUsername, oLiveView.szPassword, {
+            success: function (xmlDoc) {
+              // 开始预览
+              var szDeviceIdentify = oLiveView.szIP + "_" +
+                oLiveView.szPort;
+              setTimeout(function () {
+                WebVideoCtrl.I_StartRealPlay(szDeviceIdentify, {
+                  iStreamType: oLiveView.iStreamType,
+                  iChannelID: oLiveView.iChannelID,
+                  bZeroChannel: oLiveView.bZeroChannel
+                });
+              }, 1000);
+            }
+          });
+      }
+    });
+
+    // 关闭浏览器
+    $(window).unload(function () {
+      WebVideoCtrl.I_Stop();
+    });
+  });
+
+</script>
+
+</html>

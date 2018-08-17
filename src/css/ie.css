@@ -1,0 +1,99 @@
+@media screen and(-ms-high-contrast:active),
+(-ms-high-contrast:none) and (min-height: 800px) {
+  .top-bar .two-title {
+    top: 36px;
+    left: 46%;
+  }
+  .top-bar .button-tip {
+    top: 10px;
+    padding-left: 33px;
+  }
+  .top-bar .top-button img {
+    width: 100%;
+  }
+  .top-buttons-1,
+  .top-buttons-2 {
+    top: 32px;
+  }
+  .top-bar .top-title,
+  .top-bar .two-title {
+    background: transparent;
+    /* color: #00d595; */
+    color:#fff;
+  }
+  .col .row {
+    margin: 0;
+  }
+
+  .login-panel .lock-pwd .lock-imgs {
+    position: relative;
+  }
+  .login-panel .lock-pwd .lock-pwd-check {
+    top: 0;
+    left: 0;
+  }
+  .page-8 .page-8-content{
+    display: flex;
+    height: 69%;
+    justify-content: space-between;
+  }
+  .head-time{
+    margin-top: -10px;
+    padding-left: 6px;
+  }
+}
+
+/* @media screen and (max-height: 800px) */
+
+@media screen and(-ms-high-contrast:active),
+(-ms-high-contrast:none) and (max-height: 800px) {
+  .top-bar .two-title {
+    top: 29px;
+    left: 46%;
+    font-size: 22px;
+  }
+  .top-bar .button-tip {
+    top: 5px;
+    padding-left: 18px;
+  }
+  .top-bar .top-button img {
+    width: 100%;
+  }
+  .top-bar .top-buttons-1,
+  .top-bar .top-buttons-2 {
+    top: 32px;
+  }
+  .top-bar .top-title,
+  .top-bar .two-title {
+    background: transparent;
+    /* color: #00d595; */
+    color:#fff;
+  }
+  .col .row {
+    margin: 0;
+  }
+  .page-8{
+    height: 40%;
+  }
+  .page-8 .page-9 {
+    height: 99%;
+  }
+  .login-panel .logname-tips {
+    left: 19%;
+  }
+  .login-panel .logpass-tips {
+    left: 19%;
+  }
+  .login-panel .lock-pwd .lock-imgs {
+    position: relative;
+  }
+  .login-panel .lock-pwd .lock-pwd-check {
+    top: 0;
+    left: 0;
+  }
+  .head-time{
+    font-size: 14px;
+    margin-top: -9px;
+    padding-left: 9px;
+  }
+}
